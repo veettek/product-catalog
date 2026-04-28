@@ -28,7 +28,7 @@ namespace ProductCatalog.Controllers
                 return BadRequest(new { error = "Pole 'Nazwa' jest wymagane." });
 
             if (dto.Cena < 0)
-                return BadRequest(new { error = "Cena nie mo¿e byæ ujemna." });
+                return BadRequest(new { error = "Cena nie moÅ¼e byÄ‡ ujemna." });
 
             var product = await _repository.AddAsync(dto);
             return CreatedAtAction(nameof(GetAll), new { id = product.Id }, product);
