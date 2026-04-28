@@ -10,4 +10,6 @@ namespace ProductCatalog.Models
 
         public decimal Cena { get; set; }
     }
+
+    public record ProductCreateDto(string Kod, string Nazwa, decimal Cena);
 }

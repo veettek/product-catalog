@@ -1,30 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Models;
+using ProductCatalog.Repositories;
 
 namespace ProductCatalog.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController(IProductRepository repository, ILogger<ProductsController> logger) : ControllerBase
     {
-        private static readonly Product[] seed = new[]
-        {
-            new Product { Id = Guid.NewGuid(), Kod = "EL-001", Nazwa = "Laptop Lenovo Y580", Cena = 2999.99m },
-            new Product { Id = Guid.NewGuid(), Kod = "EL-002", Nazwa = "Realme GT2", Cena = 1950.00m },
-            new Product { Id = Guid.NewGuid(), Kod = "EL-003", Nazwa = "Philips 49PUS7502",   Cena = 3495.50m },
-        };
-
-        private readonly ILogger<ProductsController> _logger;
-
-        public ProductsController(ILogger<ProductsController> logger)
-        {
-            _logger = logger;
-        }
+        private readonly IProductRepository _repository = repository;
+        private readonly ILogger<ProductsController> _logger = logger;
 
         [HttpGet]
-        public IEnumerable<Product> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return seed;
+            var products = await _repository.GetAllAsync();
+            return Ok(products);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] ProductCreateDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Kod))
+                return BadRequest(new { error = "Pole 'Kod' jest wymagane." });
+
+            if (string.IsNullOrWhiteSpace(dto.Nazwa))
+                return BadRequest(new { error = "Pole 'Nazwa' jest wymagane." });
+
+            if (dto.Cena < 0)
+                return BadRequest(new { error = "Cena nie może być ujemna." });
+
+            var product = await _repository.AddAsync(dto);
+            return CreatedAtAction(nameof(GetAll), new { id = product.Id }, product);
         }
     }
 }
