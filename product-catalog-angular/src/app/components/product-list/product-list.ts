@@ -31,18 +31,14 @@ export class ProductList {
   }
 
   load(): void {
-    console.log("load()");
     this.loading.set(true);
     this.error.set(null);
     this.productService.getAll().subscribe({
       next: (data) => {
-        console.log("next");
-        console.log(data);
         this.products.set(data);
         this.loading.set(false);
       },
       error: () => {
-        console.log("error");
         this.error.set('Nie udało się pobrać produktów.');
         this.loading.set(false);
       }

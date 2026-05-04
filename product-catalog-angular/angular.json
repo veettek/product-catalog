@@ -74,7 +74,19 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [ "zone.js", "zone.js/testing" ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [ "src/favicon.ico", "src/assets" ],
+            "styles": [
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss"
+            ],
+            "scripts": [],
+            "karmaConfig": "karma.conf.js",
+            "codeCoverage": false
+          }
         }
       }
     }
