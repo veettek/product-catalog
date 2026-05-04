@@ -1,4 +1,42 @@
-<p>product-list works!</p>
-<p *ngFor="let p of products; let i = index">
-  {{ i + 1 }} {{ p.kod }} {{ p.nazwa }} {{ p.cena }} zł
+<mat-progress-bar *ngIf="loading()" mode="indeterminate" />
+
+<p *ngIf="error()" class="error-msg">
+  <mat-icon>error_outline</mat-icon> {{ error() }}
 </p>
+
+<div *ngIf="!loading()">
+  <table mat-table [dataSource]="products()" *ngIf="products().length > 0">
+
+    <!-- Kolumna: # -->
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let p; let i = index">{{ i + 1 }}</td>
+    </ng-container>
+
+    <!-- Kolumna: Kod -->
+    <ng-container matColumnDef="kod">
+      <th mat-header-cell *matHeaderCellDef>Kod</th>
+      <td mat-cell *matCellDef="let p"><code>{{ p.kod }}</code></td>
+    </ng-container>
+
+    <!-- Kolumna: Nazwa -->
+    <ng-container matColumnDef="nazwa">
+      <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+      <td mat-cell *matCellDef="let p">{{ p.nazwa }}</td>
+    </ng-container>
+
+    <!-- Kolumna: Cena -->
+    <ng-container matColumnDef="cena">
+      <th mat-header-cell *matHeaderCellDef>Cena</th>
+      <td mat-cell *matCellDef="let p" class="price-cell">
+        {{ p.cena | number:'1.2-2' }} zł
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <p *ngIf="products().length === 0" class="empty-msg">Brak produktów w katalogu.</p>
+</div>
