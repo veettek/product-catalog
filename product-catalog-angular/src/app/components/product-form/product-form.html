@@ -1,1 +1,30 @@
-<p>product-form works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate class="product-form">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Kod produktu</mat-label>
+    <input matInput formControlName="kod" placeholder="np. EL-004" />
+    <mat-error *ngIf="kod.hasError('required')">Kod jest wymagany.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nazwa</mat-label>
+    <input matInput formControlName="nazwa" placeholder="np. MacBook Air M3" />
+    <mat-error *ngIf="nazwa.hasError('required')">Nazwa jest wymagana.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Cena (PLN)</mat-label>
+    <input matInput type="number" formControlName="cena" placeholder="0.00" min="0" step="0.01" />
+    <mat-hint>Wartość nieujemna</mat-hint>
+    <mat-error *ngIf="cena.hasError('required')">Cena jest wymagana.</mat-error>
+    <mat-error *ngIf="cena.hasError('min')">Cena nie może być ujemna.</mat-error>
+  </mat-form-field>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
+      <mat-spinner *ngIf="submitting()" diameter="20" />
+      <span *ngIf="!submitting()">Dodaj produkt</span>
+    </button>
+  </div>
+
+</form>
