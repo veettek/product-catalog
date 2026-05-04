@@ -1,0 +1,1 @@
+cd ProductCatalog && dotnet run
