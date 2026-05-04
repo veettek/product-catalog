@@ -1,4 +1,23 @@
-<router-outlet />
+<mat-toolbar color="primary">
+  <span>Katalog Produktów</span>
+</mat-toolbar>
 
-<app-product-form></app-product-form>
-<app-product-list></app-product-list>
+<div class="page-content">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Dodaj produkt</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-product-form (productAdded)="onProductAdded()" />
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Lista produktów</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-product-list />
+    </mat-card-content>
+  </mat-card>
+</div>
